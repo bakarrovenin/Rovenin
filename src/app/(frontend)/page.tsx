@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Metadata } from 'next'
 import { Nav } from '@/components/nav/Nav'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Rovenin | Precision Research for Capital Success',
