@@ -19,8 +19,11 @@ export default async function ResearchPage() {
 
   const { docs: posts } = await payload.find({
     collection: 'posts',
-    draft: true,
-    overrideAccess: true,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
     sort: '-publishedAt',
     depth: 2,
     limit: 100,
@@ -59,7 +62,7 @@ export default async function ResearchPage() {
                 </div>
 
                 <Link
-                  href={`/posts/${post.slug}`}
+                  href={`/research/${post.slug}`}
                   className="mt-2 text-2xl tracking-wide text-custom hover:text-white transition-colors duration-300"
                 >
                   {post.title}

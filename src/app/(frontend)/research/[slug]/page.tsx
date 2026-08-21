@@ -29,6 +29,11 @@ async function getPost(slug: string): Promise<Post | null> {
             equals: slug,
           },
         },
+        {
+          _status: {
+            equals: 'published',
+          },
+        },
       ],
     },
     depth: 1,

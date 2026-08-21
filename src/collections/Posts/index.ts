@@ -223,7 +223,8 @@ export const Posts: CollectionConfig<'posts'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 2000, // Payload's recommended default — long enough that a manual
+        // Publish click won't race an in-flight autosave request and get stomped back to draft
       },
     },
     maxPerDoc: 50,
