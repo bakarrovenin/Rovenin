@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    holdings: Holding;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -87,6 +88,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    holdings: HoldingsSelect<false> | HoldingsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -706,6 +708,39 @@ export interface Form {
   createdAt: string;
 }
 /**
+ * Positions shown on the Tracker page. Entry price, exit price, and shares are used only to calculate the return percentage and are never displayed on the site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "holdings".
+ */
+export interface Holding {
+  id: number;
+  companyName: string;
+  /**
+   * Symbol used to fetch the current price, for example HIMS.
+   */
+  ticker: string;
+  /**
+   * Used only to calculate the return percentage. Never shown on the site.
+   */
+  entryPrice: number;
+  entryDate: string;
+  /**
+   * Leave empty while the position is open.
+   */
+  exitDate?: string | null;
+  /**
+   * The price the position was sold at. Set this whenever you set an exit date, so the realized return can be calculated. Used only in the calculation and never shown on the site.
+   */
+  exitPrice?: number | null;
+  /**
+   * Internal only. Never shown on the site.
+   */
+  shares?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -817,6 +852,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'holdings';
+        value: number | Holding;
       } | null)
     | ({
         relationTo: 'users';
@@ -1143,6 +1182,21 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "holdings_select".
+ */
+export interface HoldingsSelect<T extends boolean = true> {
+  companyName?: T;
+  ticker?: T;
+  entryPrice?: T;
+  entryDate?: T;
+  exitDate?: T;
+  exitPrice?: T;
+  shares?: T;
   updatedAt?: T;
   createdAt?: T;
 }
