@@ -45,6 +45,26 @@ export default function ContactPage() {
               mas@rovenin.com
             </a>
           </p>
+
+          <p className="mt-12 text-sm tracking-wide text-textlight max-md:mt-10">
+            <a
+              href="https://x.com/roveninresearch"
+              target="_blank"
+              rel="noopener"
+              className="hover:text-white transition-colors duration-300"
+            >
+              X
+            </a>
+            <span className="mx-2">·</span>
+            <a
+              href="https://rovenin.substack.com/"
+              target="_blank"
+              rel="noopener"
+              className="hover:text-white transition-colors duration-300"
+            >
+              Substack
+            </a>
+          </p>
         </div>
 
         <figure className="flex flex-col items-center max-w-[400px] max-md:w-full max-md:mt-12">

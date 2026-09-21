@@ -70,6 +70,16 @@ export default async function ResearchPage() {
               </div>
             )
           })}
+
+          <div className="mt-4 h-px w-[268px] max-w-full bg-textlight/40" />
+          <a
+            href="https://rovenin.substack.com/"
+            target="_blank"
+            rel="noopener"
+            className="mt-5 text-sm tracking-wide text-textlight hover:text-white transition-colors duration-300"
+          >
+            Get new research by email
+          </a>
         </div>
 
         <figure className="flex flex-col items-center max-w-[400px] max-md:w-full">
