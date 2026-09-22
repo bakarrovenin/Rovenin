@@ -7,6 +7,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { formatDate } from '@/utils/formatDate'
 import { RichText } from '@/components/RichText'
+import { PostFooter } from '@/components/research/PostFooter'
 import type { Post } from '@/payload-types'
 import Link from 'next/link'
 
@@ -90,6 +91,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="prose prose-invert prose-custom ml-72 max-md:ml-0">
           <RichText content={content} />
         </article>
+
+        <PostFooter />
       </div>
     </section>
   )

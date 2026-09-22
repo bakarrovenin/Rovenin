@@ -6,6 +6,7 @@ import { Nav } from '@/components/nav/Nav'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { formatDate } from '@/utils/formatDate'
+import { SubscribeLink } from '@/components/research/ResearchLinks'
 
 export const metadata: Metadata = {
   title: 'Rovenin | Research',
@@ -72,14 +73,7 @@ export default async function ResearchPage() {
           })}
 
           <div className="mt-4 h-px w-[268px] max-w-full bg-textlight/40" />
-          <a
-            href="https://rovenin.substack.com/"
-            target="_blank"
-            rel="noopener"
-            className="mt-5 text-sm tracking-wide text-textlight hover:text-white transition-colors duration-300"
-          >
-            Get new research by email
-          </a>
+          <SubscribeLink placement="research_page" className="mt-5" />
         </div>
 
         <figure className="flex flex-col items-center max-w-[400px] max-md:w-full">
