@@ -6,6 +6,7 @@ import { Nav } from '@/components/nav/Nav'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { formatDate } from '@/utils/formatDate'
+import { getPinnedPrice } from '@/data/marketPrices'
 
 export const metadata: Metadata = {
   title: 'Tracker | Rovenin',
@@ -26,9 +27,19 @@ type Row = {
   ticker: string
   link: string | null
   buyPrice: string
+  /**
+   * Shown beside the price when the row is not in the table's assumed dollars,
+   * so a rupee figure is never read as a dollar one. Null leaves USD rows alone.
+   */
+  currency: string | null
   entryDate: string
   exitDate: string
   isClosed: boolean
+  /**
+   * The muted line under the exit date: "closed" once settled, otherwise how
+   * the open position is being priced, so a pinned price never reads as live.
+   */
+  stateNote: string
   returnPct: number | null
 }
 
@@ -85,11 +96,19 @@ export default async function TrackerPage() {
       // nothing rather than a misleading live number.
       let priceToCompare: number | null = null
 
+      // A symbol we price by hand is never sent to the feed, because the feed
+      // would answer for a different company trading under the same letters.
+      const pinned = getPinnedPrice(holding.ticker)
+
       if (isClosed) {
         priceToCompare = Number.isFinite(exitPrice) && exitPrice > 0 ? exitPrice : null
+      } else if (pinned) {
+        priceToCompare = pinned.lastPrice
       } else {
         priceToCompare = await fetchCurrentPrice(holding.ticker)
       }
+
+      const stateNote = isClosed ? 'closed' : pinned ? `as of ${formatDate(pinned.asOf)}` : 'live'
 
       const returnPct =
         priceToCompare !== null && hasValidEntry
@@ -102,9 +121,11 @@ export default async function TrackerPage() {
         ticker: holding.ticker,
         link: typeof holding.link === 'string' && holding.link.length > 0 ? holding.link : null,
         buyPrice: hasValidEntry ? formatPrice(entryPrice) : '',
+        currency: pinned && pinned.currency !== 'USD' ? pinned.currency : null,
         entryDate: holding.entryDate ? formatDate(holding.entryDate) : '',
         exitDate: holding.exitDate ? formatDate(holding.exitDate) : 'Open',
         isClosed,
+        stateNote,
         returnPct,
       }
     }),
@@ -168,17 +189,20 @@ export default async function TrackerPage() {
                 </div>
                 <div className="w-[95px] shrink-0 text-right text-base tracking-wide text-white max-md:w-[60px] max-md:text-xs">
                   {row.buyPrice}
+                  {row.currency && (
+                    <span className="block mt-1 text-xs tracking-[0.12em] text-textlight/60 max-md:text-[9px]">
+                      {row.currency}
+                    </span>
+                  )}
                 </div>
                 <div className="w-[120px] shrink-0 text-base tracking-wide text-textlight max-md:w-[80px] max-md:text-[10px]">
                   {row.entryDate}
                 </div>
                 <div className="w-[120px] shrink-0 text-base tracking-wide text-textlight max-md:w-[80px] max-md:text-[10px]">
                   {row.exitDate}
-                  {row.isClosed && (
-                    <span className="block mt-1 text-xs tracking-[0.12em] text-textlight/60 max-md:text-[9px]">
-                      closed
-                    </span>
-                  )}
+                  <span className="block mt-1 text-xs tracking-[0.12em] text-textlight/60 max-md:text-[9px]">
+                    {row.stateNote}
+                  </span>
                 </div>
                 <div className="w-[100px] shrink-0 text-right text-lg tracking-wide max-md:w-[70px] max-md:text-xs">
                   {row.returnPct === null ? (
