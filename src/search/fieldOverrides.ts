@@ -49,7 +49,9 @@ export const searchFields: Field[] = [
         type: 'text',
       },
       {
-        name: 'id',
+        // Must not be called "id": that name collides with the array row's own
+        // primary key, and a missing value then aborts the whole publish.
+        name: 'categoryID',
         type: 'text',
       },
       {
