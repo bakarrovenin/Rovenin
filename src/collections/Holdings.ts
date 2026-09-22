@@ -42,6 +42,25 @@ export const Holdings: CollectionConfig = {
       },
     },
     {
+      name: 'link',
+      type: 'text',
+      required: false,
+      label: 'Link',
+      validate: (value: unknown) => {
+        if (!value) return true
+        try {
+          const url = new URL(String(value))
+          return url.protocol === 'https:' || url.protocol === 'http:' || 'Link must start with http:// or https://'
+        } catch {
+          return 'Link must be a full URL, for example https://coinmarketcap.com/currencies/deltaliquidity/'
+        }
+      },
+      admin: {
+        description:
+          'Optional. When set, the company name on the Tracker page links here and opens in a new tab.',
+      },
+    },
+    {
       name: 'entryPrice',
       type: 'number',
       required: true,

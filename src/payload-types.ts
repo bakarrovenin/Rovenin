@@ -721,6 +721,10 @@ export interface Holding {
    */
   ticker: string;
   /**
+   * Optional. When set, the company name on the Tracker page links here and opens in a new tab.
+   */
+  link?: string | null;
+  /**
    * Used only to calculate the return percentage. Never shown on the site.
    */
   entryPrice: number;
@@ -1192,6 +1196,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface HoldingsSelect<T extends boolean = true> {
   companyName?: T;
   ticker?: T;
+  link?: T;
   entryPrice?: T;
   entryDate?: T;
   exitDate?: T;

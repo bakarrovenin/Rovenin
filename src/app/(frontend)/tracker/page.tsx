@@ -24,10 +24,23 @@ type Row = {
   id: string
   companyName: string
   ticker: string
+  link: string | null
   buyPrice: string
   entryDate: string
   exitDate: string
+  isClosed: boolean
   returnPct: number | null
+}
+
+/**
+ * Prices at or above one unit are shown to two decimals, matching the rest of
+ * the table. Sub-unit prices (typically crypto) would round to 0.00 at two
+ * decimals, so they keep up to four, with trailing zeros beyond the second
+ * dropped: 0.018 stays 0.018, 0.5 becomes 0.50.
+ */
+const formatPrice = (price: number): string => {
+  if (price >= 1) return price.toFixed(2)
+  return price.toFixed(4).replace(/(\.\d{2}\d*?)0+$/, '$1')
 }
 
 const fetchCurrentPrice = async (ticker: string): Promise<number | null> => {
@@ -87,9 +100,11 @@ export default async function TrackerPage() {
         id: String(holding.id),
         companyName: holding.companyName,
         ticker: holding.ticker,
-        buyPrice: hasValidEntry ? entryPrice.toFixed(2) : '',
+        link: typeof holding.link === 'string' && holding.link.length > 0 ? holding.link : null,
+        buyPrice: hasValidEntry ? formatPrice(entryPrice) : '',
         entryDate: holding.entryDate ? formatDate(holding.entryDate) : '',
         exitDate: holding.exitDate ? formatDate(holding.exitDate) : 'Open',
+        isClosed,
         returnPct,
       }
     }),
@@ -134,7 +149,19 @@ export default async function TrackerPage() {
             <div key={row.id}>
               <div className="flex gap-4 items-baseline py-8 max-md:py-6 max-md:gap-3">
                 <div className="flex-1 min-w-0 text-lg tracking-wide text-white max-md:text-sm">
-                  {row.companyName}
+                  {row.link ? (
+                    <a
+                      href={row.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${row.companyName} (opens in a new tab)`}
+                      className="hover:text-custom transition-colors duration-300 focus-visible:outline-none focus-visible:text-custom"
+                    >
+                      {row.companyName}
+                    </a>
+                  ) : (
+                    row.companyName
+                  )}
                   <span className="ml-3 text-sm tracking-[0.12em] text-custom max-md:ml-2 max-md:text-[10px]">
                     {row.ticker}
                   </span>
@@ -147,6 +174,11 @@ export default async function TrackerPage() {
                 </div>
                 <div className="w-[120px] shrink-0 text-base tracking-wide text-textlight max-md:w-[80px] max-md:text-[10px]">
                   {row.exitDate}
+                  {row.isClosed && (
+                    <span className="block mt-1 text-xs tracking-[0.12em] text-textlight/60 max-md:text-[9px]">
+                      closed
+                    </span>
+                  )}
                 </div>
                 <div className="w-[100px] shrink-0 text-right text-lg tracking-wide max-md:w-[70px] max-md:text-xs">
                   {row.returnPct === null ? (
