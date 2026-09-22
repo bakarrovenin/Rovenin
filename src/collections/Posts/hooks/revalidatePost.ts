@@ -4,26 +4,46 @@ import { revalidatePath } from 'next/cache'
 
 import type { Post } from '../../../payload-types'
 
+/**
+ * Posts are read on /research and /research/[slug]. Both routes are
+ * force-dynamic today, so this is belt and braces: it keeps the site correct
+ * if either route is ever switched to static rendering.
+ *
+ * Every call is wrapped so that a revalidation failure can only ever be
+ * logged. This hook runs inside the same database transaction as the publish,
+ * and anything thrown here would roll the publish back while the admin still
+ * reports success.
+ */
+const safeRevalidate = (payload: { logger: { info: (msg: string) => void; error: (msg: string) => void } }, path: string) => {
+  try {
+    payload.logger.info(`Revalidating ${path}`)
+    revalidatePath(path)
+  } catch (err) {
+    payload.logger.error(`Revalidation of ${path} failed, continuing: ${String(err)}`)
+  }
+}
+
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
   previousDoc,
   req: { payload },
 }) => {
-  if (doc._status === 'published') {
-    const path = `/posts/${doc.slug}`
+  const isPublished = doc._status === 'published'
+  const wasPublished = previousDoc?._status === 'published'
 
-    payload.logger.info(`Revalidating post at path: ${path}`)
-
-    revalidatePath(path)
+  // Any change to a published post, or a post leaving the published state,
+  // changes what the listing shows.
+  if (isPublished || wasPublished) {
+    safeRevalidate(payload, '/research')
   }
 
-  // If the post was previously published, we need to revalidate the old path
-  if (previousDoc._status === 'published' && doc._status !== 'published') {
-    const oldPath = `/posts/${previousDoc.slug}`
+  if (isPublished && doc.slug) {
+    safeRevalidate(payload, `/research/${doc.slug}`)
+  }
 
-    payload.logger.info(`Revalidating old post at path: ${oldPath}`)
-
-    revalidatePath(oldPath)
+  // The old URL needs clearing when a post is unpublished or its slug changes.
+  if (wasPublished && previousDoc?.slug && (!isPublished || previousDoc.slug !== doc.slug)) {
+    safeRevalidate(payload, `/research/${previousDoc.slug}`)
   }
 
   return doc

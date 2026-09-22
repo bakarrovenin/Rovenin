@@ -75,6 +75,11 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      hooks: {
+        // Titles pasted from a document often carry leading or trailing
+        // whitespace, which then shows on the site and feeds the slug.
+        beforeValidate: [({ value }) => (typeof value === 'string' ? value.trim() : value)],
+      },
     },
     {
       type: 'tabs',
