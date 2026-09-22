@@ -11,12 +11,11 @@ const items = [
   { href: '/tracker', label: 'Tracker' },
   { href: '/services', label: 'Services' },
   { href: '/studio', label: 'Studio' },
-  { href: '/services#contact', label: 'Contact' },
 ]
 
 export const Nav: React.FC<NavProps> = ({ currentPath }) => {
   return (
-    <nav className="flex flex-wrap gap-6 justify-between self-end max-w-full text-lg tracking-wide w-[700px] max-md:w-full max-md:justify-start max-md:text-sm max-md:gap-x-4 max-md:gap-y-2">
+    <nav className="flex gap-6 justify-between self-end max-w-full text-lg tracking-wide w-[600px] max-md:w-full max-md:text-sm max-md:gap-3">
       {items.map((item) => (
         <Link
           key={item.href}
