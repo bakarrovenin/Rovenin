@@ -34,7 +34,20 @@ const redirects = async () => {
     statusCode: 301,
   }
 
-  const redirects = [internetExplorerRedirect, aboutToServices, contactToServices, tradingBotToBotLab]
+  // A gold post URL that never existed but was getting visitors; send them to the gold thesis.
+  const goldBuyingToGoldThesis = {
+    source: '/research/gold-buying-strategy-by-price-level',
+    destination: '/research/our-gold-thesis-follow-central-bank-money',
+    statusCode: 301,
+  }
+
+  const redirects = [
+    internetExplorerRedirect,
+    aboutToServices,
+    contactToServices,
+    tradingBotToBotLab,
+    goldBuyingToGoldThesis,
+  ]
 
   return redirects
 }

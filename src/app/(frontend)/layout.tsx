@@ -8,6 +8,7 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Analytics } from '@/components/Analytics'
+import { internalVisitScript } from '@/components/Analytics/internal'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -34,10 +35,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        {/* Leadfeeder visitor tracker */}
+        {/* Internal visit flag (?internal=1), set before any tracker runs */}
+        <script dangerouslySetInnerHTML={{ __html: internalVisitScript }} />
+        {/* Leadfeeder visitor tracker, skipped for internal visits */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('ywVkO4Xlxpe4Z6Bj');`,
+            __html: `if (!window.__roveninInternal) (function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('ywVkO4Xlxpe4Z6Bj');`,
           }}
         />
       </head>
@@ -64,6 +67,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   title: 'Rovenin',
   description: 'Precision Research for Capital Success',
+  verification: {
+    google: 'bQtCE-L28Q_GFFPaPSAaC1WS0M4WkSZfZUypjxdkkSk',
+  },
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.ico',
