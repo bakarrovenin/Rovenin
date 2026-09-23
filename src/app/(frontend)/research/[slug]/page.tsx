@@ -92,7 +92,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <RichText content={content} />
         </article>
 
-        <PostFooter />
+        <PostFooter slug={post.slug || params.slug} title={title} />
       </div>
     </section>
   )

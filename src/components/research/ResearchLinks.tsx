@@ -20,6 +20,9 @@ export type Placement = 'post_footer' | 'research_page'
 export const substackUrl = (placement: Placement): string =>
   `${SUBSTACK_URL}?utm_source=rovenin&utm_medium=${placement}`
 
+export const xUrl = (placement: Placement): string =>
+  `${X_URL}?utm_source=rovenin&utm_medium=${placement}`
+
 const linkClasses = 'hover:text-white transition-colors duration-300'
 
 type PlacementProps = {
@@ -41,7 +44,7 @@ export const SubscribeLink: React.FC<PlacementProps> = ({ placement, className }
 export const SocialLinks: React.FC<PlacementProps> = ({ placement, className }) => (
   <p className={cn('text-sm tracking-wide text-textlight', className)}>
     <a
-      href={X_URL}
+      href={xUrl(placement)}
       target="_blank"
       rel="noopener"
       aria-label="Rovenin on X (opens in a new tab)"
