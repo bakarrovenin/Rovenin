@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 
 import { cn } from 'src/utilities/cn'
 import { GeistMono } from 'geist/font/mono'
@@ -8,6 +7,7 @@ import { Gilda_Display } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
+import { Analytics } from '@/components/Analytics'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -53,20 +53,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </Providers>
 
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-7ZR5P3WQHJ"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-7ZR5P3WQHJ');
-          `}
-        </Script>
+        {/* Google Analytics: real pages only, never for internal visits */}
+        <Analytics />
       </body>
     </html>
   )
