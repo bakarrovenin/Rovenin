@@ -23,6 +23,11 @@ export const WhatWeBuild: React.FC<{ heading?: string }> = ({ heading = 'What we
           <p className="mt-4 text-base tracking-wide text-textlight leading-[1.75] max-md:text-sm">
             {item.description}
           </p>
+          {item.note && (
+            <p className="mt-4 text-sm tracking-wide text-custom leading-[1.75] max-md:text-xs">
+              {item.note}
+            </p>
+          )}
         </div>
       ))}
     </div>

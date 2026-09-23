@@ -9,6 +9,27 @@ import { getProject, projects } from '@/data/studio'
 
 type Args = { params: Promise<{ slug: string }> }
 
+const researchLinkClass =
+  'inline-block mt-10 px-10 py-4 text-sm tracking-[0.16em] uppercase text-custom border border-custom/60 hover:text-black hover:bg-custom transition-colors duration-300 focus-visible:outline-none focus-visible:text-black focus-visible:bg-custom max-md:mt-8 max-md:px-8'
+
+/** The full write up: an in site path stays in the tab, anything else opens a new one. */
+const ResearchLink: React.FC<{ url: string }> = ({ url }) =>
+  url.startsWith('/') ? (
+    <Link href={url} className={researchLinkClass}>
+      Read the full research
+    </Link>
+  ) : (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Read the full research (opens in a new tab)"
+      className={researchLinkClass}
+    >
+      Read the full research
+    </a>
+  )
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }))
 }
@@ -75,6 +96,41 @@ export default async function StudioProjectPage({ params }: Args) {
           ))}
         </div>
       </div>
+
+      {project.testing && project.testing.length > 0 && (
+        <div className="mt-32 w-full max-w-[860px] max-md:mt-20 max-md:max-w-full">
+          <h2 className="text-2xl tracking-wide text-white max-md:text-xl">How we tested it</h2>
+
+          <div className="mt-10 flex flex-col gap-6 max-md:mt-8">
+            {project.testing.map((paragraph) => (
+              <p
+                key={paragraph.slice(0, 40)}
+                className="text-base tracking-wide text-textlight leading-[1.85] max-md:text-sm"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {project.verdict && (
+        <div className="mt-24 w-full max-w-[860px] max-md:mt-16 max-md:max-w-full">
+          <div className="h-px w-full bg-custom/60" />
+          <div className="mt-10 text-sm tracking-[0.2em] uppercase text-custom max-md:mt-8">Verdict</div>
+          <p className="mt-6 text-2xl tracking-wide text-white leading-[1.6] max-md:text-lg">
+            {project.verdict}
+          </p>
+          {project.outlook && (
+            <p className="mt-8 text-base tracking-wide text-textlight leading-[1.85] max-md:text-sm">
+              {project.outlook}
+            </p>
+          )}
+          {project.researchUrl && (
+            <ResearchLink url={project.researchUrl} />
+          )}
+        </div>
+      )}
 
       {project.highlights.length > 0 && (
         <div className="mt-32 w-full max-w-[860px] max-md:mt-20 max-md:max-w-full">

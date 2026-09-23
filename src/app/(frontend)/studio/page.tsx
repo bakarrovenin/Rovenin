@@ -2,9 +2,9 @@ import React from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Nav } from '@/components/nav/Nav'
-import { StatusBadge } from '@/components/studio/StatusBadge'
+import { ProjectCard } from '@/components/studio/ProjectCard'
 import { WhatWeBuild } from '@/components/studio/WhatWeBuild'
-import { projects } from '@/data/studio'
+import { botLabIntro, projectsIn } from '@/data/studio'
 
 export const metadata: Metadata = {
   title: 'Studio | Rovenin',
@@ -42,29 +42,22 @@ export default function StudioPage() {
         <h2 className="text-2xl tracking-wide text-white max-md:text-xl">Projects</h2>
 
         <div className="mt-16 grid grid-cols-2 gap-x-20 gap-y-16 max-md:grid-cols-1 max-md:gap-y-12 max-md:mt-10">
-          {projects.map((project) => (
-            <article key={project.slug} className="flex flex-col">
-              <div className="h-px w-full bg-custom/60" />
+          {projectsIn('projects').map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
+      </div>
 
-              <Link
-                href={`/studio/${project.slug}`}
-                className="group flex flex-col pt-8 max-md:pt-6 focus-visible:outline-none"
-              >
-                <StatusBadge status={project.status} />
+      <div id="bot-lab" className="mt-32 w-full max-w-[1170px] scroll-mt-10 max-md:mt-20 max-md:max-w-full">
+        <h2 className="text-2xl tracking-wide text-white max-md:text-xl">Bot Lab</h2>
 
-                <h3 className="mt-5 text-2xl tracking-wide text-white group-hover:text-custom group-focus-visible:text-custom transition-colors duration-300 max-md:text-xl">
-                  {project.name}
-                </h3>
+        <p className="mt-8 text-xl tracking-wide text-white leading-[1.7] max-w-[680px] max-md:text-base max-md:mt-6">
+          {botLabIntro}
+        </p>
 
-                <p className="mt-4 text-base tracking-wide text-textlight leading-[1.75] max-md:text-sm">
-                  {project.summary}
-                </p>
-
-                <span className="mt-6 text-sm tracking-[0.16em] uppercase text-custom group-hover:text-white group-focus-visible:text-white transition-colors duration-300">
-                  Read more
-                </span>
-              </Link>
-            </article>
+        <div className="mt-16 grid grid-cols-2 gap-x-20 gap-y-16 max-md:grid-cols-1 max-md:gap-y-12 max-md:mt-10">
+          {projectsIn('bot-lab').map((project) => (
+            <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
       </div>

@@ -27,7 +27,14 @@ const redirects = async () => {
     statusCode: 301,
   }
 
-  const redirects = [internetExplorerRedirect, aboutToServices, contactToServices]
+  // The single "Trading Bot" placeholder became the four Bot Lab projects.
+  const tradingBotToBotLab = {
+    source: '/studio/trading-bot',
+    destination: '/studio#bot-lab',
+    statusCode: 301,
+  }
+
+  const redirects = [internetExplorerRedirect, aboutToServices, contactToServices, tradingBotToBotLab]
 
   return redirects
 }
