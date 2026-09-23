@@ -102,7 +102,7 @@ export const projects: StudioProject[] = [
       "We backtested it on about 3,700 resolved markets and verified the station data matched Polymarket's payouts 98.6% of the time.",
     ],
     verdict:
-      'The crowd prices weather better than the models once real trading costs are included, and the order books are too thin (about $1 to 2 deep) to size into anyway.',
+      'The market beat our forecasts even before trading costs (a Brier score of 0.649 against our 0.785, where lower is better), and order books on the edge temperature buckets were only about $1 to 2 deep, too thin to size into anyway.',
     outlook: 'The collector keeps running in case better forecasts change the picture.',
     researchUrl: '',
     highlights: [],
@@ -119,7 +119,7 @@ export const projects: StudioProject[] = [
       'It collects funding payments from overexcited leveraged traders on Binance and Hyperliquid, holding the asset and shorting it at once so price moves cancel out.',
     ],
     testing: [
-      'We backtested three versions over 12 months, then paper traded every signal with active margin management.',
+      'We backtested three versions over 12 months, then paper traded 10 of 11 signals (one had no Hyperliquid spot market) with active margin management.',
     ],
     verdict:
       'The hedges held through big moves with no liquidations, but funding barely covered fees: ten managed positions netted $0.06.',
@@ -138,10 +138,10 @@ export const projects: StudioProject[] = [
     summary: "What copying Polymarket's top traders would really have made, after delays and fees.",
     description: ["Can you get rich copying Polymarket's top traders?"],
     testing: [
-      'We picked 91 leaderboard wallets using only data from before a cutoff date, then measured what a copier would have made afterwards at 30 second, 5 minute and 1 hour delays, after fees.',
+      'We took 91 leaderboard wallets, ranked them using only data from before a cutoff date, then measured what a copier would have made afterwards at 30 second, 5 minute and 1 hour delays, after fees.',
     ],
     verdict:
-      'No wallet or category was reliably profitable to copy, 11 of the top 20 stopped trading entirely, and copying crypto bots lost money with statistical confidence.',
+      'No wallet or category was reliably profitable to copy, 11 of the top 20 stopped trading entirely, and copying a crypto bot and the market makers lost money with statistical confidence.',
     researchUrl: '',
     highlights: [],
     stack: [],
@@ -154,10 +154,10 @@ export const projects: StudioProject[] = [
     status: 'Live paper test',
     summary: 'Calculated odds for 5 and 15 minute Bitcoin and Ethereum up or down markets.',
     description: [
-      'Polymarket runs 5 and 15 minute Bitcoin and Ethereum up or down markets. Our bot calculates the true odds from price, time remaining and volatility, then posts small limit orders only where the market is underpricing.',
+      'Polymarket runs 5 and 15 minute Bitcoin and Ethereum up or down markets. Our bot estimates fair odds from price, time remaining and volatility, then simulates small limit orders only where the market is underpricing.',
     ],
     testing: [
-      "We studied the most profitable bot in these markets (1.83 million fills) to learn its behaviour, and our backtest's best version returned 4.4% per dollar deployed.",
+      "We studied one of the most active bots in these markets (1.83 million fills) to learn its behaviour, and our backtest's best version returned 4.4% per dollar deployed.",
     ],
     verdict:
       'Promising but not yet statistically proven. A preregistered one week live paper test ends 30 September 2026.',
