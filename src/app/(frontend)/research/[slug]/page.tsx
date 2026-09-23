@@ -88,7 +88,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="mt-3 mb-12 h-px w-[268px] border-t border-textlight" />
         </div>
 
-        <article className="prose prose-invert prose-custom ml-72 max-md:ml-0">
+        <article className="prose prose-invert prose-custom ml-72 max-md:ml-0 [&_a]:[overflow-wrap:anywhere]">
           <RichText content={content} />
         </article>
 
