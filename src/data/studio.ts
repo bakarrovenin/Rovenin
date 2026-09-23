@@ -27,6 +27,8 @@ export const statusTone: Record<StudioStatus, 'accent' | 'muted'> = {
 }
 
 /** Where a project sits on /studio. */
+export type StudioRepo = { url: string; visibility: 'public' | 'private' }
+
 export type StudioGroup = 'projects' | 'bot-lab'
 
 export type StudioLink = {
@@ -60,6 +62,8 @@ export type StudioProject = {
    * hidden while this is empty; fill it in once the write up is published.
    */
   researchUrl?: string
+  /** Source repository. Visibility is checked with an unauthenticated request before it is set to public. */
+  repo?: StudioRepo
 }
 
 export const projects: StudioProject[] = [
@@ -104,6 +108,7 @@ export const projects: StudioProject[] = [
     verdict:
       'The market beat our forecasts even before trading costs (a Brier score of 0.649 against our 0.785, where lower is better), and order books on the edge temperature buckets were only about $1 to 2 deep, too thin to size into anyway.',
     outlook: 'The collector keeps running in case better forecasts change the picture.',
+    repo: { url: 'https://github.com/bakarrovenin/rovenin-weather', visibility: 'private' },
     researchUrl: '',
     highlights: [],
     stack: [],
@@ -125,6 +130,7 @@ export const projects: StudioProject[] = [
       'The hedges held through big moves with no liquidations, but funding barely covered fees: ten managed positions netted $0.06.',
     outlook:
       "It now runs as an alarm that emails us when funding turns euphoric, since that's when carry actually pays.",
+    repo: { url: 'https://github.com/bakarrovenin/rovenin-carry', visibility: 'private' },
     researchUrl: '',
     highlights: [],
     stack: [],
@@ -142,6 +148,7 @@ export const projects: StudioProject[] = [
     ],
     verdict:
       'No wallet or category was reliably profitable to copy, 11 of the top 20 stopped trading entirely, and copying a crypto bot and the market makers lost money with statistical confidence.',
+    repo: { url: 'https://github.com/bakarrovenin/rovenin-copy', visibility: 'private' },
     researchUrl: '',
     highlights: [],
     stack: [],
@@ -161,6 +168,7 @@ export const projects: StudioProject[] = [
     ],
     verdict:
       'Promising but not yet statistically proven. A preregistered one week live paper test ends 30 September 2026.',
+    repo: { url: 'https://github.com/bakarrovenin/rovenin-mm', visibility: 'private' },
     researchUrl: '',
     highlights: [],
     stack: [],

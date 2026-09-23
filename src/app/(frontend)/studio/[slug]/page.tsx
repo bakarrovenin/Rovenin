@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav/Nav'
 import { CopyableUrl } from '@/components/studio/CopyableUrl'
+import { ProjectCard } from '@/components/studio/ProjectCard'
+import { RepoTag } from '@/components/studio/RepoTag'
 import { StatusBadge } from '@/components/studio/StatusBadge'
-import { getProject, projects } from '@/data/studio'
+import { getProject, projects, projectsIn } from '@/data/studio'
 
 type Args = { params: Promise<{ slug: string }> }
 
@@ -52,6 +54,8 @@ export default async function StudioProjectPage({ params }: Args) {
 
   const visitLinks = project.links.filter((link) => !link.copyable)
   const copyLinks = project.links.filter((link) => link.copyable)
+  const moreFromGroup =
+    project.group === 'bot-lab' ? projectsIn('bot-lab').filter((other) => other.slug !== project.slug) : []
 
   return (
     <section className="flex overflow-hidden flex-col items-start px-20 pt-5 pb-44 bg-black max-md:px-5 max-md:pb-24">
@@ -73,8 +77,9 @@ export default async function StudioProjectPage({ params }: Args) {
           Back to Studio
         </Link>
 
-        <div className="mt-10 max-md:mt-8">
+        <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 max-md:mt-8">
           <StatusBadge status={project.status} />
+          {project.repo && <RepoTag repo={project.repo} />}
         </div>
 
         <h1 className="mt-5 text-5xl tracking-wide text-custom leading-[1.2] max-md:text-3xl">
@@ -195,6 +200,18 @@ export default async function StudioProjectPage({ params }: Args) {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {moreFromGroup.length > 0 && (
+        <div className="mt-32 w-full max-w-[1170px] max-md:mt-20 max-md:max-w-full">
+          <h2 className="text-2xl tracking-wide text-white max-md:text-xl">More from the Bot Lab</h2>
+
+          <div className="mt-12 grid grid-cols-3 gap-x-14 gap-y-16 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:gap-y-12 max-md:mt-8">
+            {moreFromGroup.map((other) => (
+              <ProjectCard key={other.slug} project={other} />
+            ))}
+          </div>
         </div>
       )}
 
