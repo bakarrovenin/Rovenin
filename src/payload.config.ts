@@ -65,6 +65,12 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
+    // Schema changes reach the database only through migrations in
+    // src/migrations, never through dev-mode push. Push silently mutates
+    // whatever DATABASE_URI points at, which is how production drifted from
+    // the config after the Holdings collection was added.
+    push: false,
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   collections: [Pages, Posts, Media, Categories, Holdings, Users],
   cors: [getServerSideURL()].filter(Boolean),
