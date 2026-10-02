@@ -64,6 +64,8 @@ export type StudioProject = {
   researchUrl?: string
   /** Source repository. Visibility is checked with an unauthenticated request before it is set to public. */
   repo?: StudioRepo
+  /** External live dashboard, shown on the project's card when available. */
+  dashboardUrl?: string
 }
 
 export const projects: StudioProject[] = [
@@ -169,6 +171,7 @@ export const projects: StudioProject[] = [
     verdict:
       'Promising but not yet statistically proven. A preregistered one week live paper test ends 30 September 2026.',
     repo: { url: 'https://github.com/bakarrovenin/rovenin-mm', visibility: 'private' },
+    dashboardUrl: 'https://dashboard.rovenin.com',
     researchUrl: '',
     highlights: [],
     stack: [],

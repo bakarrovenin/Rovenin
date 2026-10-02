@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { StatusBadge } from '@/components/studio/StatusBadge'
 import type { StudioProject } from '@/data/studio'
 
-/** One project in a /studio grid: bronze hairline, status, name, summary, read more. */
+/** One project in a /studio grid: bronze hairline, status, name, summary, and links. */
 export const ProjectCard: React.FC<{ project: StudioProject }> = ({ project }) => (
   <article className="flex flex-col">
     <div className="h-px w-full bg-custom/60" />
@@ -27,5 +27,15 @@ export const ProjectCard: React.FC<{ project: StudioProject }> = ({ project }) =
         Read more
       </span>
     </Link>
+    {project.dashboardUrl && (
+      <a
+        href={project.dashboardUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 text-sm tracking-[0.16em] uppercase text-custom hover:text-white focus-visible:outline-none focus-visible:text-white transition-colors duration-300"
+      >
+        Live dashboard ↗
+      </a>
+    )}
   </article>
 )
